@@ -15,7 +15,7 @@ namespace ObjectsCollections
 
         public LinkedList()
         {
-            head = null;
+            head = new LinkedListNode<T>(default(T));
         }
 
         public void Add(T item)
