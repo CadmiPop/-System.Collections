@@ -9,7 +9,7 @@ namespace ObjectsCollections
     {
         public int Count { get; protected set; }
 
-        public bool IsReadOnly => throw new NotImplementedException();
+        public bool IsReadOnly => false;
 
         private LinkedListNode<T> head;
 
@@ -25,7 +25,7 @@ namespace ObjectsCollections
 
         public void Clear()
         {
-            throw new NotImplementedException();
+            Count = 0;
         }
 
         public bool Contains(T item)
@@ -50,7 +50,7 @@ namespace ObjectsCollections
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            throw new NotImplementedException();
+            return GetEnumerator();
         }
     }
 }

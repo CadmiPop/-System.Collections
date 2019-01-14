@@ -111,7 +111,7 @@ namespace ObjectsCollections
         
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
 
         public void CopyTo(T[] arrayToCopy, int arrayIndex)
