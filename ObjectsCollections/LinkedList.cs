@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 
 namespace ObjectsCollections
 {
-    class LinkedList<T> : ICollection<T>
+    public class LinkedList<T> : ICollection<T>
     {
         public int Count { get; protected set; }
 
@@ -15,12 +16,40 @@ namespace ObjectsCollections
 
         public LinkedList()
         {
-            head = new LinkedListNode<T>(default(T));
+            head = new LinkedListNode<T>();
+            head.Next = head;
+            head.Previous = head;
         }
 
-        public void Add(T item)
+        void ICollection<T>.Add(T item)
         {
-            throw new NotImplementedException();
+            AddLast(item);
+        }
+
+        public void AddFirst(T element)
+        {
+            var node = new LinkedListNode<T>(element);
+            InsertBefore(head.Next, node);
+        }
+
+        public void AddLast(T element)
+        {
+            var node = new LinkedListNode<T>(element);
+            InsertBefore(head, node);
+        }
+
+        public void InsertBefore(LinkedListNode<T> node , LinkedListNode<T> newNode)
+        {
+            newNode.Next = node;
+            newNode.Previous = node.Previous;
+            node.Previous.Next = newNode;
+            node.Previous = newNode;
+            Count++;
+        }
+
+        public void InsertAfter(LinkedListNode<T> node, LinkedListNode<T> newNode)
+        {
+            AddLast(newNode.Data);
         }
 
         public void Clear()
@@ -45,12 +74,34 @@ namespace ObjectsCollections
 
         public IEnumerator<T> GetEnumerator()
         {
-            throw new NotImplementedException();
+            var current = head;
+            if (current != null)
+            {
+                do
+                {
+                    yield return current.Data;
+                    current = current.Next;
+                } while (current != head);
+            }
+        }
+
+        public IEnumerator<T> GetReverseEnumerator()
+        {
+            var current = head;
+            if (current != null)
+            {
+                do
+                {
+                    yield return current.Data;
+                    current = head.Previous;
+                } while (current != head);
+            }
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }
+     
     }
 }

@@ -8,12 +8,18 @@ namespace ObjectsCollections
     {
         public T Data { get; set; }
 
-        public LinkedListNode(T data)
-        {
-            Data = data;
-        }
-
         public LinkedListNode<T> Next { get; set; }
         public LinkedListNode<T> Previous { get; set; }
+
+        public LinkedListNode(T element)
+        {
+            Data = element;
+            Next = null;
+            Previous = null;
+        }
+
+        public LinkedListNode()
+        {
+        }
     }
 }
