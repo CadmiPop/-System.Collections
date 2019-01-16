@@ -55,7 +55,17 @@ namespace ObjectsCollections
             for (var current = head.Next; current != head; current = current.Next)
             {
                 if(current.Data.Equals(item))
-                return current;
+                    return current;
+            }
+            throw new Exception("Item not Found");
+        }
+
+        public LinkedListNode<T> FindLast(T item)
+        {
+            for (var current = head.Previous; current != head; current = current.Previous)
+            {
+                if (current.Data.Equals(item))
+                    return current;
             }
             throw new Exception("Item not Found");
         }
@@ -76,6 +86,16 @@ namespace ObjectsCollections
         }
 
         public bool Remove(T item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool RemoveFirst()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool RemoveLast()
         {
             throw new NotImplementedException();
         }
