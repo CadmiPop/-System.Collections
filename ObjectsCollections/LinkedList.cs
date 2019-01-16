@@ -105,15 +105,10 @@ namespace ObjectsCollections
 
         public bool Remove(T item)
         {
-            var nodeToRemove = Find(item);            
-            if  (nodeToRemove == null)
+            var nodeToRemove = Find(item);
+            if (nodeToRemove == null)
                 throw new ArgumentNullException("Node is not in the List");
-            if (Contains(item))
-            {
-                RemoveNode(nodeToRemove);
-                return true;
-            }
-            return false;
+            return nodeToRemove == null ? false : RemoveNode(nodeToRemove);
         }
 
         public bool RemoveFirst()
