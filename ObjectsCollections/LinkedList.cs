@@ -57,7 +57,7 @@ namespace ObjectsCollections
                 if(current.Data.Equals(item))
                     return current;
             }
-            throw new Exception("Item not Found");
+            return null;
         }
 
         public LinkedListNode<T> FindLast(T item)
@@ -67,7 +67,7 @@ namespace ObjectsCollections
                 if (current.Data.Equals(item))
                     return current;
             }
-            throw new Exception("Item not Found");
+            return null;
         }
 
         public void Clear()
@@ -77,7 +77,7 @@ namespace ObjectsCollections
 
         public bool Contains(T item)
         {
-            throw new NotImplementedException();
+            return Find(item) != null;
         }
 
         public void CopyTo(T[] array, int arrayIndex)

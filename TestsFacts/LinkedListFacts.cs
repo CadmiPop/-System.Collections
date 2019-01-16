@@ -46,8 +46,19 @@ namespace TestsFacts
             a.AddFirst(4);
             a.AddFirst(6);
             a.AddFirst(5);
-            a.FindLast(1);
+            a.FindLast(5);
             Assert.Equal(new[] { 5, 6, 4, 2 }, a);
+        }
+
+        [Fact]
+        public void Validate_LinkedList_Contains()
+        {
+            var a = new LinkedList<int>();
+            a.AddFirst(2);
+            a.AddFirst(4);
+            a.AddFirst(6);
+            a.AddFirst(5);
+            Assert.Contains(6, a);
         }
     }
 }
