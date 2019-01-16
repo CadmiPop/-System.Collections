@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Text;
 
 namespace ObjectsCollections
 {
@@ -28,17 +26,17 @@ namespace ObjectsCollections
 
         public void AddFirst(T element)
         {
-            var node = new LinkedListNode<T>(element);
+            LinkedListNode<T> node = new LinkedListNode<T>(element);
             InsertBefore(head.Next, node);
         }
 
         public void AddLast(T element)
         {
-            var node = new LinkedListNode<T>(element);
+            LinkedListNode<T> node = new LinkedListNode<T>(element);
             InsertBefore(head, node);
         }
 
-        public void InsertBefore(LinkedListNode<T> node , LinkedListNode<T> newNode)
+        public void InsertBefore(LinkedListNode<T> node, LinkedListNode<T> newNode)
         {
             newNode.Next = node;
             newNode.Previous = node.Previous;
@@ -49,7 +47,17 @@ namespace ObjectsCollections
 
         public void InsertAfter(LinkedListNode<T> node, LinkedListNode<T> newNode)
         {
-            AddLast(newNode.Data);
+            InsertBefore(node.Next, newNode);
+        }
+
+        public LinkedListNode<T> Find(T item)
+        {
+            for (var current = head.Next; current != head; current = current.Next)
+            {
+                if(current.Data.Equals(item))
+                return current;
+            }
+            throw new Exception("Item not Found");
         }
 
         public void Clear()
@@ -74,27 +82,17 @@ namespace ObjectsCollections
 
         public IEnumerator<T> GetEnumerator()
         {
-            var current = head;
-            if (current != null)
+            for (var current = head.Next; current != head; current = current.Next)
             {
-                do
-                {
-                    yield return current.Data;
-                    current = current.Next;
-                } while (current != head);
+                yield return current.Data;
             }
         }
 
         public IEnumerator<T> GetReverseEnumerator()
         {
-            var current = head;
-            if (current != null)
+            for (var current = head.Previous; current != head; current = current.Previous)
             {
-                do
-                {
-                    yield return current.Data;
-                    current = head.Previous;
-                } while (current != head);
+                yield return current.Data;
             }
         }
 
@@ -102,6 +100,6 @@ namespace ObjectsCollections
         {
             return GetEnumerator();
         }
-     
+
     }
 }
