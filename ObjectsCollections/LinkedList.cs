@@ -94,19 +94,36 @@ namespace ObjectsCollections
             }
         }
 
+        public bool RemoveNode(LinkedListNode<T> nodeToRemove)
+        {
+            var temp = nodeToRemove.Previous;
+            temp.Next = nodeToRemove.Next;
+            nodeToRemove.Next.Previous = nodeToRemove.Previous;
+            Count--;
+            return true;
+        }
+
         public bool Remove(T item)
         {
-            throw new NotImplementedException();
+            var nodeToRemove = Find(item);            
+            if  (nodeToRemove == null)
+                throw new ArgumentNullException("Node is not in the List");
+            if (Contains(item))
+            {
+                RemoveNode(nodeToRemove);
+                return true;
+            }
+            return false;
         }
 
         public bool RemoveFirst()
         {
-            throw new NotImplementedException();
+            return RemoveNode(head.Next);
         }
 
         public bool RemoveLast()
         {
-            throw new NotImplementedException();
+            return RemoveNode(head.Previous);
         }
 
         public IEnumerator<T> GetEnumerator()

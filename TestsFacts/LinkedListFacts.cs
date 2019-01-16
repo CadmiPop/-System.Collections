@@ -73,5 +73,41 @@ namespace TestsFacts
             a.CopyTo(b,1);
             Assert.Equal(new [] {0,3,4,5,6}, b);
         }
+
+        [Fact]
+        public void Validate_LinkedList_Remove()
+        {
+            var a = new LinkedList<int>();
+            a.AddFirst(6);
+            a.AddFirst(5);
+            a.AddFirst(4);
+            a.AddFirst(3);
+            Assert.True(a.Remove(6));
+            Assert.Equal(new[] { 3, 4, 5,} , a);            
+        }
+
+        [Fact]
+        public void Validate_LinkedList_RemoveFirst()
+        {
+            var a = new LinkedList<int>();
+            a.AddFirst(6);
+            a.AddFirst(5);
+            a.AddFirst(4);
+            a.AddFirst(3);
+            Assert.True(a.RemoveFirst());
+            Assert.Equal(new[] { 4, 5, 6, }, a);
+        }
+
+        [Fact]
+        public void Validate_LinkedList_RemoveLast()
+        {
+            var a = new LinkedList<int>();
+            a.AddFirst(6);
+            a.AddFirst(5);
+            a.AddFirst(4);
+            a.AddFirst(3);
+            Assert.True(a.RemoveLast());
+            Assert.Equal(new[] { 3, 4, 5, }, a);
+        }
     }
 }
