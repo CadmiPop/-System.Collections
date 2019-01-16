@@ -82,7 +82,16 @@ namespace ObjectsCollections
 
         public void CopyTo(T[] array, int arrayIndex)
         {
-            throw new NotImplementedException();
+            if (array == null)
+                throw new ArgumentNullException("Array");
+            if (arrayIndex < 0 || arrayIndex > array.Length)
+                throw new ArgumentOutOfRangeException("ArrayIndex");
+
+            for (var current = head.Next; current != head; current = current.Next)
+            {
+                array[arrayIndex] = current.Data;
+                arrayIndex++;
+            }
         }
 
         public bool Remove(T item)

@@ -60,5 +60,18 @@ namespace TestsFacts
             a.AddFirst(5);
             Assert.Contains(6, a);
         }
+
+        [Fact]
+        public void Validate_LinkedList_CopyTo()
+        {
+            var a = new LinkedList<int>();
+            var b = new int[5];
+            a.AddFirst(6);
+            a.AddFirst(5);
+            a.AddFirst(4);
+            a.AddFirst(3);
+            a.CopyTo(b,1);
+            Assert.Equal(new [] {0,3,4,5,6}, b);
+        }
     }
 }
