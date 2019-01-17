@@ -10,8 +10,8 @@ namespace ObjectsCollections
     public class Dictionary<TKey,TValue>: IDictionary<TKey, TValue>
     {
         private int[] buckets  { get; set; }
-        private Dictionary<TKey, TValue>[] items { get; set; }
-        private KeyValuePair<TKey, TValue> item;
+
+        private Items<TKey, TValue>[] items { get; set; }
 
         public TValue this[TKey key] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
@@ -26,7 +26,7 @@ namespace ObjectsCollections
         public Dictionary()
         {
             buckets = new int[10];
-            items = new Dictionary<TKey, TValue>[10];
+            items = new Items<TKey, TValue>[10];
         }
         
         public void Add(TKey key, TValue value)
