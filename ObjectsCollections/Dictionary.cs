@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
+using System.Transactions;
 
 namespace ObjectsCollections
 {
@@ -138,37 +139,34 @@ namespace ObjectsCollections
 
         public bool Remove(TKey key)
         {
-            GetElementIndex(key, out int index);
+            GetElementIndex(key, out int removedItemIndex);
             int bucketIndex = GetBucketIndex(key);
-            if (buckets[bucketIndex] == -1)
-            {
+            int itemIndex = buckets[bucketIndex];
+
+            if (!ContainsKey(key))
                 return false;
-            }
-            else if (items[index].Next == -1)
+
+            if (items[itemIndex].Key.Equals(key))
             {
-                if (items[index].Key.Equals(key))
-                {
-                    items[buckets[bucketIndex]].Next = -1;
-                    items[index] = null;
-                    Count--;
-                    return true;
-                }
+                buckets[bucketIndex] = items[itemIndex].Next;
+                items[itemIndex].Next = -1;
+                items[removedItemIndex] = null;
+                Count--;
+                return true;
             }
-            else if (items[index].Next != -1)
+
+            while (!items[itemIndex].Next.Equals(removedItemIndex))
             {
-                if (items[index].Key.Equals(key))
-                {
-                    buckets[bucketIndex] = items[index].Next;
-                    items[index] = null;
-                    Count--;
-                    return true;
-                }
+                itemIndex = items[itemIndex].Next;
             }
+                
+            
 
-
-
-
-            return false;
+            items[itemIndex].Next = items[removedItemIndex].Next;
+            items[removedItemIndex].Next = -1;
+            items[removedItemIndex] = null;
+            Count--;
+            return true;
         }
 
         public bool Remove(KeyValuePair<TKey, TValue> item)

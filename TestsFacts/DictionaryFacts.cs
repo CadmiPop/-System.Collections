@@ -79,8 +79,9 @@ namespace TestsFacts
             a.Add(2, "test2");
             a.Add(10, "test3");
             a.Add(7, "test3");
+            a.Add(12, "test3");
             a.Remove(2);
-            Assert.Equal(3, a.Count);
+            Assert.Equal(4, a.Count);
         }
 
         [Fact]
@@ -107,7 +108,7 @@ namespace TestsFacts
             a.Add(12,"test12");
             a.Add(17, "test17");
             a.Remove(7);
-            Assert.Equal(3, a.Count);
+            Assert.Equal(4, a.Count);
         }
     }
 }
