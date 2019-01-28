@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
+using System.Resources;
 using System.Text;
 using System.Transactions;
 
@@ -116,31 +117,26 @@ namespace ObjectsCollections
                 var a = firstItemFree;
                 var temp = items[firstItemFree].Next;
                 items[firstItemFree] = new Item<TKey, TValue>(key, value) { Next = buckets[index] };
-                firstItemFree = temp;
-                buckets[index] = a;
-                Count++;
-                
+                firstItemFree = temp;                
             }
             else
             {
-                items[Count] = new Item<TKey, TValue>(key, value) { Next = buckets[index] };
-
-                buckets[index] = Count;
-
-                Count++;
+                items[Count] = new Item<TKey, TValue>(key, value) { Next = buckets[index] };               
             }
+            buckets[index] = Count;
+            Count++;
         }
 
-        public bool FindIndexOfFirstFreeElement(out int indexOfFirstFreeElement)
-        {
-            for (indexOfFirstFreeElement = 0; indexOfFirstFreeElement < items.Length; indexOfFirstFreeElement++)
-            {
-                if (items[indexOfFirstFreeElement] == null)
-                    return true;
-            }
+        //public bool FindIndexOfFirstFreeElement(out int indexOfFirstFreeElement)
+        //{
+        //    for (indexOfFirstFreeElement = 0; indexOfFirstFreeElement < items.Length; indexOfFirstFreeElement++)
+        //    {
+        //        if (items[indexOfFirstFreeElement] == null)
+        //            return true;
+        //    }
 
-            return false;
-        }
+        //    return false;
+        //}
 
         public void Add(KeyValuePair<TKey, TValue> item)
         {
@@ -164,6 +160,20 @@ namespace ObjectsCollections
 
         public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
         {
+            if (array == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            if (arrayIndex < 0 || arrayIndex > array.Length)
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+
+            if (array.Length - arrayIndex < Count)
+            {
+                throw new MissingManifestResourceException();
+            }
             Array.Copy(items, 0, array, arrayIndex, items.Length);
         }
 
@@ -175,20 +185,14 @@ namespace ObjectsCollections
             if (removedItemIndex == buckets[bucketIndex])
             {
                 buckets[bucketIndex] = items[removedItemIndex].Next;
-                items[removedItemIndex].Next = firstItemFree;
-
-                firstItemFree = removedItemIndex;
-
-                Count--;
-                return true;
             }
-
-            items[prevItemIndex].Next = items[removedItemIndex].Next;
+            else
+            {
+                items[prevItemIndex].Next = items[removedItemIndex].Next;
+            }
+            
             items[removedItemIndex].Next = firstItemFree;
-
             firstItemFree = removedItemIndex;
-
-
             Count--;
             return true;
         }
