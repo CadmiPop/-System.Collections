@@ -15,7 +15,7 @@ namespace ObjectsCollections
 
         private Item<TKey, TValue>[] items;
 
-        public int firstItemFree;
+        public int firstItemFree = -1;
 
         public Dictionary(int capacity = 10)
         {
@@ -111,10 +111,24 @@ namespace ObjectsCollections
         {
             var index = GetBucketIndex(key);
 
-            items[Count] = new Item<TKey, TValue>(key, value) {Next = buckets[index]};
-            buckets[index] = Count;
+            if (firstItemFree != -1)
+            {
+                var a = firstItemFree;
+                var temp = items[firstItemFree].Next;
+                items[firstItemFree] = new Item<TKey, TValue>(key, value) { Next = buckets[index] };
+                firstItemFree = temp;
+                buckets[index] = a;
+                Count++;
+                
+            }
+            else
+            {
+                items[Count] = new Item<TKey, TValue>(key, value) { Next = buckets[index] };
 
-            Count++;
+                buckets[index] = Count;
+
+                Count++;
+            }
         }
 
         public bool FindIndexOfFirstFreeElement(out int indexOfFirstFreeElement)
@@ -161,13 +175,20 @@ namespace ObjectsCollections
             if (removedItemIndex == buckets[bucketIndex])
             {
                 buckets[bucketIndex] = items[removedItemIndex].Next;
-                items[removedItemIndex].Next = -1;
+                items[removedItemIndex].Next = firstItemFree;
+
+                firstItemFree = removedItemIndex;
+
                 Count--;
                 return true;
             }
 
             items[prevItemIndex].Next = items[removedItemIndex].Next;
-            items[removedItemIndex].Next = -1;
+            items[removedItemIndex].Next = firstItemFree;
+
+            firstItemFree = removedItemIndex;
+
+
             Count--;
             return true;
         }
