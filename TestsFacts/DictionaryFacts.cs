@@ -110,5 +110,20 @@ namespace TestsFacts
             a.Remove(7);
             Assert.Equal(4, a.Count);
         }
+
+        [Fact]
+        public void Find_A_Gap_In_Dictionary()
+        {
+
+            var a = new ObjectsCollections.Dictionary<int, string>(5);
+            a.Add(1, "test1");
+            a.Add(2, "test2");
+            a.Add(7, "test3");
+            a.Add(12, "test12");
+            a.Add(17, "test17");
+            a.Remove(7);            
+            Assert.True( a.FindIndexOfFirstFreeElement(out int index));
+            Assert.Equal(2, index);
+        }
     }
 }

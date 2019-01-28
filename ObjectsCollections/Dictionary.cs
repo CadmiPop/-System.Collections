@@ -86,13 +86,18 @@ namespace ObjectsCollections
 
         public bool GetElementIndex(TKey key, out int index)
         {
-            var bucketIndex = GetBucketIndex(key);
+            return GetElementIndex(key, out index, out int bucketIndex, out int prevItemIndex);
+        }
 
+        public bool GetElementIndex(TKey key, out int index, out int bucketIndex, out int prevItemIndex)
+        {
+            bucketIndex = GetBucketIndex(key);
+            prevItemIndex = -1;
             for (index = buckets[bucketIndex]; index != -1; index = items[index].Next)
             {
                 if (items[index].Key.Equals(key))
                     return true;
-                
+                prevItemIndex = index;
             }
 
             return false;
@@ -110,6 +115,17 @@ namespace ObjectsCollections
             buckets[index] = Count;
 
             Count++;
+        }
+
+        public bool FindIndexOfFirstFreeElement(out int indexOfFirstFreeElement)
+        {
+            for (indexOfFirstFreeElement = 0; indexOfFirstFreeElement < items.Length; indexOfFirstFreeElement++)
+            {
+                if (items[indexOfFirstFreeElement] == null)
+                    return true;
+            }
+
+            return false;
         }
 
         public void Add(KeyValuePair<TKey, TValue> item)
@@ -139,39 +155,26 @@ namespace ObjectsCollections
 
         public bool Remove(TKey key)
         {
-            GetElementIndex(key, out int removedItemIndex);
-            int bucketIndex = GetBucketIndex(key);
-            int itemIndex = buckets[bucketIndex];
-
-            if (!ContainsKey(key))
+            if (!GetElementIndex(key, out int removedItemIndex, out int bucketIndex, out int prevItemIndex))
                 return false;
 
-            if (items[itemIndex].Key.Equals(key))
+            if (removedItemIndex == buckets[bucketIndex])
             {
-                buckets[bucketIndex] = items[itemIndex].Next;
-                items[itemIndex].Next = -1;
-                items[removedItemIndex] = null;
+                buckets[bucketIndex] = items[removedItemIndex].Next;
+                items[removedItemIndex].Next = -1;
                 Count--;
                 return true;
             }
 
-            while (!items[itemIndex].Next.Equals(removedItemIndex))
-            {
-                itemIndex = items[itemIndex].Next;
-            }
-                
-            
-
-            items[itemIndex].Next = items[removedItemIndex].Next;
+            items[prevItemIndex].Next = items[removedItemIndex].Next;
             items[removedItemIndex].Next = -1;
-            items[removedItemIndex] = null;
             Count--;
             return true;
         }
 
         public bool Remove(KeyValuePair<TKey, TValue> item)
         {
-            throw new NotImplementedException();
+           return Remove(item.Key);
         }
 
         public bool TryGetValue(TKey key, out TValue value)
