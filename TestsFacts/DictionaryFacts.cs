@@ -11,7 +11,7 @@ namespace TestsFacts
         public void Is_empty_at_start()
         {
             var a = new ObjectsCollections.Dictionary<int, string>();
-            Assert.Equal(0, a.Count);
+            Assert.Empty(a);
         }
 
         [Fact]
