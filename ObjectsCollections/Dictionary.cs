@@ -38,7 +38,7 @@ namespace ObjectsCollections
                 }
                 else
                 {
-                    return default(TValue);
+                    throw new KeyNotFoundException("Key is not found");
                 }
             }
             set
@@ -110,6 +110,13 @@ namespace ObjectsCollections
 
         public void Add(TKey key, TValue value)
         {
+            if (key == null)
+                throw new ArgumentNullException("key is null");
+            if (ContainsKey(key))
+                throw new ArgumentException("An element with the same key already exists in the IDictionary<TKey, TValue>.");
+            if (IsReadOnly)
+                throw new NotSupportedException("The IDictionary<TKey,TValue> is read-only.");
+
             var index = GetBucketIndex(key);
 
             if (firstItemFree != -1)
@@ -126,17 +133,6 @@ namespace ObjectsCollections
             buckets[index] = Count;
             Count++;
         }
-
-        //public bool FindIndexOfFirstFreeElement(out int indexOfFirstFreeElement)
-        //{
-        //    for (indexOfFirstFreeElement = 0; indexOfFirstFreeElement < items.Length; indexOfFirstFreeElement++)
-        //    {
-        //        if (items[indexOfFirstFreeElement] == null)
-        //            return true;
-        //    }
-
-        //    return false;
-        //}
 
         public void Add(KeyValuePair<TKey, TValue> item)
         {
@@ -155,6 +151,8 @@ namespace ObjectsCollections
 
         public bool ContainsKey(TKey key)
         {
+            if (key == null)
+                throw new ArgumentNullException("key is null");
             return GetElementIndex(key, out int index);
         }
 
@@ -179,6 +177,11 @@ namespace ObjectsCollections
 
         public bool Remove(TKey key)
         {
+            if (key == null)
+                throw new ArgumentNullException("key is null");
+            if (IsReadOnly)
+                throw new NotSupportedException("The IDictionary<TKey,TValue> is read-only.");
+
             if (!GetElementIndex(key, out int removedItemIndex, out int bucketIndex, out int prevItemIndex))
                 return false;
 
@@ -203,7 +206,10 @@ namespace ObjectsCollections
         }
 
         public bool TryGetValue(TKey key, out TValue value)
-        {          
+        {
+            if (key == null)
+                throw new ArgumentNullException("key is null");
+
             if (GetElementIndex(key, out int index))
             {
                 value = items[index].Value;
@@ -231,8 +237,6 @@ namespace ObjectsCollections
                 }
             }
         }
-
-
     }
 }
         
